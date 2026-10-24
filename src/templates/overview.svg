@@ -1,151 +1,234 @@
 
-<svg id="gh-dark-mode-only" width="360" height="300" xmlns="http://www.w3.org/2000/svg">
+<svg
+  id="gh-dark-mode-only"
+  width="470"
+  height="490"
+  viewBox="0 0 470 490"
+  xmlns="http://www.w3.org/2000/svg">
+
   <style>
     svg {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-      font-size: 14px;
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 13px;
     }
 
     #background {
-      width: calc(100% - 10px);
-      height: calc(100% - 10px);
       fill: #0d1117;
       stroke: #30363d;
       stroke-width: 1px;
-      rx: 6px;
-      ry: 6px;
     }
 
-    foreignObject {
-      width: calc(100% - 42px);
-      height: calc(100% - 42px);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: auto;
-    }
-
-    th {
-      padding: 0.5em;
-      padding-top: 0;
-      padding-bottom: 12px;
-      text-align: left;
-      font-size: 14px;
+    .title {
+      fill: #58a6ff;
+      font-size: 17px;
       font-weight: 600;
-      color: #58a6ff;
     }
 
-    td {
-      padding: 5px 3px;
+    .label {
+      fill: #c9d1d9;
       font-size: 12px;
-      line-height: 18px;
-      color: #c9d1d9;
     }
 
-    td:last-child {
-      text-align: right;
-      white-space: nowrap;
+    .value {
+      fill: #e6edf3;
+      font-size: 12px;
       font-weight: 600;
-      color: #e6edf3;
+      text-anchor: end;
     }
 
-    tr {
-      transform: translateX(-200%);
-      animation: slideIn 1s ease-in-out forwards;
-    }
-
-    thead tr {
-      transform: translateX(0);
-      animation: none;
-    }
-
-    .octicon {
+    .icon {
       fill: #8b949e;
-      margin-right: 6px;
-      vertical-align: middle;
     }
 
-    @keyframes slideIn {
+    .row {
+      opacity: 0;
+      animation: fadeIn 0.5s ease-out forwards;
+    }
+
+    .divider {
+      stroke: #21262d;
+      stroke-width: 1;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
       to {
-        transform: translateX(0);
+        opacity: 1;
       }
     }
   </style>
 
-  <g>
-    <rect x="5" y="5" id="background"/>
+  <!-- Fundo principal -->
+  <rect
+    id="background"
+    x="5"
+    y="5"
+    width="460"
+    height="480"
+    rx="8"
+    ry="8"/>
 
-    <foreignObject x="21" y="21" width="318" height="258">
-      <div xmlns="http://www.w3.org/1999/xhtml">
+  <!-- Título -->
+  <text
+    x="24"
+    y="37"
+    class="title">{{ name }}'s GitHub Statistics</text>
 
-        <table>
-          <thead>
-            <tr>
-              <th colspan="2">{{ name }}'s GitHub Statistics</th>
-            </tr>
-          </thead>
+  <line
+    x1="24"
+    y1="53"
+    x2="446"
+    y2="53"
+    class="divider"/>
 
-          <tbody>
-            <tr>
-              <td>
-                <svg class="octicon" viewBox="0 0 16 16" width="16" height="16">
-                  <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
-                </svg>
-                Stars
-              </td>
-              <td>{{ stars }}</td>
-            </tr>
-
-            <tr style="animation-delay: 100ms">
-              <td>
-                <svg class="octicon" viewBox="0 0 16 16" width="16" height="16">
-                  <path d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878z"/>
-                </svg>
-                Forks
-              </td>
-              <td>{{ forks }}</td>
-            </tr>
-
-            <tr style="animation-delay: 200ms">
-              <td>All-time contributions</td>
-              <td>{{ contributions }}</td>
-            </tr>
-
-            <tr style="animation-delay: 300ms">
-              <td>Lines of code changed</td>
-              <td>{{ lines_changed }}</td>
-            </tr>
-
-            <tr style="animation-delay: 400ms">
-              <td>Repository views (past two weeks)</td>
-              <td>{{ views }}</td>
-            </tr>
-
-            <tr style="animation-delay: 500ms">
-              <td>Repositories with contributions</td>
-              <td>{{ repos }}</td>
-            </tr>
-
-            <tr style="animation-delay: 600ms">
-              <td>Issue contributions</td>
-              <td>{{ issue_contributions }}</td>
-            </tr>
-
-            <tr style="animation-delay: 700ms">
-              <td>Pull request contributions</td>
-              <td>{{ pr_contributions }}</td>
-            </tr>
-
-            <tr style="animation-delay: 800ms">
-              <td>Pull request reviews</td>
-              <td>{{ review_contributions }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-    </foreignObject>
+  <!-- 1. Contribuições -->
+  <g class="row" style="animation-delay: 0ms">
+    <text x="24" y="80" class="label">
+      All-time GitHub contributions
+    </text>
+    <text x="446" y="80" class="value">
+      {{ contributions }}
+    </text>
   </g>
+
+  <!-- 2. Repositórios -->
+  <g class="row" style="animation-delay: 70ms">
+    <text x="24" y="110" class="label">
+      Repositories with contributions
+    </text>
+    <text x="446" y="110" class="value">
+      {{ repos }}
+    </text>
+  </g>
+
+  <!-- 3. Linhas alteradas -->
+  <g class="row" style="animation-delay: 140ms">
+    <text x="24" y="140" class="label">
+      Lines of code changes
+    </text>
+    <text x="446" y="140" class="value">
+      {{ lines_changed }}
+    </text>
+  </g>
+
+  <!-- 4. Percentual médio de alterações -->
+  <g class="row" style="animation-delay: 210ms">
+    <text x="24" y="170" class="label">
+      Avg. percent of code changes (per repo)
+    </text>
+    <text x="446" y="170" class="value">
+      {{ avg_percent }}
+    </text>
+  </g>
+
+  <!-- 5. Colaboradores -->
+  <g class="row" style="animation-delay: 280ms">
+    <text x="24" y="200" class="label">
+      Repository collaborators (sum)
+    </text>
+    <text x="446" y="200" class="value">
+      {{ collaborators }}
+    </text>
+  </g>
+
+  <!-- 6. Contribuidores -->
+  <g class="row" style="animation-delay: 350ms">
+    <text x="24" y="230" class="label">
+      Repository contributors (sum)
+    </text>
+    <text x="446" y="230" class="value">
+      {{ contributors }}
+    </text>
+  </g>
+
+  <!-- 7. Visualizações -->
+  <g class="row" style="animation-delay: 420ms">
+    <text x="24" y="260" class="label">
+      Repository views (past 14 days)
+    </text>
+    <text x="446" y="260" class="value">
+      {{ views }}
+    </text>
+  </g>
+
+  <!-- 8. Clones -->
+  <g class="row" style="animation-delay: 490ms">
+    <text x="24" y="290" class="label">
+      Repository clones (past 14 days)
+    </text>
+    <text x="446" y="290" class="value">
+      {{ clones }}
+    </text>
+  </g>
+
+  <!-- 9. Forks -->
+  <g class="row" style="animation-delay: 560ms">
+    <text x="24" y="320" class="label">
+      Forks
+    </text>
+    <text x="446" y="320" class="value">
+      {{ forks }}
+    </text>
+  </g>
+
+  <!-- 10. Estrelas -->
+  <g class="row" style="animation-delay: 630ms">
+    <text x="24" y="350" class="label">
+      Stars
+    </text>
+    <text x="446" y="350" class="value">
+      {{ stars }}
+    </text>
+  </g>
+
+  <!-- 11. Pull Requests -->
+  <g class="row" style="animation-delay: 700ms">
+    <text x="24" y="380" class="label">
+      Pull request contributions
+    </text>
+    <text x="446" y="380" class="value">
+      {{ pr_contributions }}
+    </text>
+  </g>
+
+  <!-- 12. Issues -->
+  <g class="row" style="animation-delay: 770ms">
+    <text x="24" y="410" class="label">
+      Issue contributions
+    </text>
+    <text x="446" y="410" class="value">
+      {{ issue_contributions }}
+    </text>
+  </g>
+
+  <!-- 13. Revisões de Pull Requests -->
+  <g class="row" style="animation-delay: 840ms">
+    <text x="24" y="440" class="label">
+      Pull request reviews
+    </text>
+    <text x="446" y="440" class="value">
+      {{ review_contributions }}
+    </text>
+  </g>
+
+  <!-- Rodapé -->
+  <line
+    x1="24"
+    y1="456"
+    x2="446"
+    y2="456"
+    class="divider"/>
+
+  <text
+    x="24"
+    y="474"
+    font-size="10"
+    fill="#8b949e">
+    Generated automatically with GitHub Actions
+  </text>
+
 </svg>
