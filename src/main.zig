@@ -1,3 +1,4 @@
+
 const builtin = @import("builtin");
 const std = @import("std");
 const version = @import("options").version;
@@ -115,6 +116,7 @@ fn languages(
     const a = arena.allocator();
     const progress = try a.alloc([]const u8, stats.languages.count());
     const lang_list = try a.alloc([]const u8, stats.languages.count());
+
     for (
         stats.languages.keys(),
         stats.languages.values(),
@@ -129,12 +131,14 @@ fn languages(
             else
                 @as(f64, @floatFromInt(count)) /
                     @as(f64, @floatFromInt(stats.languages_total));
+
         progress_s.* = try std.fmt.allocPrint(a,
             \\<span style="
             \\  background-color: {s}; 
             \\  width: {d:.3}%;
             \\" class="progress-item"></span>
         , .{ color orelse "#000", percent });
+
         lang_s.* = try std.fmt.allocPrint(a,
             \\<li style="animation-delay: {d}ms;">
             \\  <svg 
@@ -155,10 +159,14 @@ fn languages(
             \\
         , .{ (i + 1) * 150, color orelse "#000", language, percent });
     }
+
     return templateFill(
         a,
         template,
-        struct { lang_list: []const u8, progress: []const u8 }{
+        struct {
+            lang_list: []const u8,
+            progress: []const u8,
+        }{
             .lang_list = try std.mem.concat(a, u8, lang_list),
             .progress = try std.mem.concat(a, u8, progress),
         },
@@ -171,6 +179,7 @@ pub fn main(init: std.process.Init) !void {
 
     const args = try Args.init(init);
     defer args.deinit(allocator);
+
     if (args.silent) {
         log_level = .err;
     } else if (args.debug) {
@@ -207,6 +216,7 @@ pub fn main(init: std.process.Init) !void {
         else
             null;
     defer if (exclude_repos) |exclude| allocator.free(exclude);
+
     const exclude_langs =
         if (args.exclude_langs) |exclude|
             try splitList(allocator, exclude, ",\t\r\n|\"'\x00")
@@ -234,6 +244,7 @@ pub fn main(init: std.process.Init) !void {
     if (args.json_output_file) |path| {
         var arena = std.heap.ArenaAllocator.init(allocator);
         defer arena.deinit();
+
         try writeFile(
             io,
             path,
@@ -260,6 +271,21 @@ pub fn main(init: std.process.Init) !void {
         pr_contributions: usize = 0,
         review_contributions: usize = 0,
 
+        clones_total: usize = 0,
+        collaborators_total: usize = 0,
+        contributors_total: usize = 0,
+
+        clones_available: usize = 0,
+        collaborators_available: usize = 0,
+        contributors_available: usize = 0,
+
+        percent_sum_basis_points: u128 = 0,
+        percent_repos: usize = 0,
+
+        clones: []const u8 = "N/D",
+        collaborators: []const u8 = "N/D",
+        contributors: []const u8 = "N/D",
+        avg_percent: []const u8 = "N/D",
     } = .{
         .contributions = stats.repo_contributions +
             stats.issue_contributions +
@@ -273,23 +299,52 @@ pub fn main(init: std.process.Init) !void {
         .pr_contributions = stats.pr_contributions,
         .review_contributions = stats.review_contributions,
     };
+
     defer aggregate_stats.languages.deinit(allocator);
     defer aggregate_stats.language_colors.deinit(allocator);
+
     for (stats.repositories) |repository| {
         if (glob.matchAny(exclude_repos orelse &.{}, repository.name) or
             (args.exclude_private and repository.private))
         {
             continue;
         }
+
         aggregate_stats.stars += repository.stars;
         aggregate_stats.forks += repository.forks;
         aggregate_stats.lines_changed += repository.lines_changed;
         aggregate_stats.views += repository.views;
         aggregate_stats.repos += 1;
+
+        if (repository.clones) |count| {
+            aggregate_stats.clones_total += count;
+            aggregate_stats.clones_available += 1;
+        }
+
+        if (repository.collaborators) |count| {
+            aggregate_stats.collaborators_total += count;
+            aggregate_stats.collaborators_available += 1;
+        }
+
+        if (repository.contributors) |count| {
+            aggregate_stats.contributors_total += count;
+            aggregate_stats.contributors_available += 1;
+        }
+
+        if (repository.total_lines_changed > 0) {
+            const basis_points =
+                (@as(u128, repository.lines_changed) * 10000) /
+                @as(u128, repository.total_lines_changed);
+
+            aggregate_stats.percent_sum_basis_points += basis_points;
+            aggregate_stats.percent_repos += 1;
+        }
+
         if (repository.languages) |langs| for (langs) |language| {
             if (glob.matchAny(exclude_langs orelse &.{}, language.name)) {
                 continue;
             }
+
             if (language.color) |color| {
                 try aggregate_stats.language_colors.put(
                     allocator,
@@ -297,15 +352,30 @@ pub fn main(init: std.process.Init) !void {
                     color,
                 );
             }
-            var total = aggregate_stats.languages.get(language.name) orelse 0;
+
+            var total =
+                aggregate_stats.languages.get(language.name) orelse 0;
+
             total += language.size;
-            try aggregate_stats.languages.put(allocator, language.name, total);
+
+            try aggregate_stats.languages.put(
+                allocator,
+                language.name,
+                total,
+            );
+
             aggregate_stats.languages_total += language.size;
         };
     }
+
     aggregate_stats.languages.sort(struct {
         values: @TypeOf(aggregate_stats.languages.values()),
-        pub fn lessThan(self: @This(), a: usize, b: usize) bool {
+
+        pub fn lessThan(
+            self: @This(),
+            a: usize,
+            b: usize,
+        ) bool {
             // Sort in reverse order
             return self.values[a] > self.values[b];
         }
@@ -314,6 +384,47 @@ pub fn main(init: std.process.Init) !void {
     {
         var arena = std.heap.ArenaAllocator.init(allocator);
         defer arena.deinit();
+
+        const a = arena.allocator();
+
+        if (aggregate_stats.clones_available > 0) {
+            aggregate_stats.clones = try std.fmt.allocPrint(
+                a,
+                "{d}",
+                .{aggregate_stats.clones_total},
+            );
+        }
+
+        if (aggregate_stats.collaborators_available > 0) {
+            aggregate_stats.collaborators = try std.fmt.allocPrint(
+                a,
+                "{d}",
+                .{aggregate_stats.collaborators_total},
+            );
+        }
+
+        if (aggregate_stats.contributors_available > 0) {
+            aggregate_stats.contributors = try std.fmt.allocPrint(
+                a,
+                "{d}",
+                .{aggregate_stats.contributors_total},
+            );
+        }
+
+        if (aggregate_stats.percent_repos > 0) {
+            const avg_basis_points =
+                aggregate_stats.percent_sum_basis_points /
+                @as(u128, aggregate_stats.percent_repos);
+
+            aggregate_stats.avg_percent = try std.fmt.allocPrint(
+                a,
+                "{d}.{d:0>2}%",
+                .{
+                    avg_basis_points / 100,
+                    avg_basis_points % 100,
+                },
+            );
+        }
 
         try writeFile(
             io,
@@ -353,15 +464,22 @@ fn readFile(
     path: []const u8,
 ) ![]const u8 {
     std.log.info("Reading data from '{s}'", .{path});
+
     const in =
         if (std.mem.eql(u8, path, "-"))
             std.Io.File.stdin()
         else
             try std.Io.Dir.cwd().openFile(io, path, .{});
+
     defer if (!std.mem.eql(u8, path, "-")) in.close(io);
+
     var read_buffer: [64 * 1024]u8 = undefined;
     var reader = in.reader(io, &read_buffer);
-    return try (&reader.interface).allocRemaining(allocator, .unlimited);
+
+    return try (&reader.interface).allocRemaining(
+        allocator,
+        .unlimited,
+    );
 }
 
 fn writeFile(
@@ -370,14 +488,18 @@ fn writeFile(
     data: []const u8,
 ) !void {
     std.log.info("Writing data to '{s}'", .{path});
+
     const out =
         if (std.mem.eql(u8, path, "-"))
             std.Io.File.stdout()
         else
             try std.Io.Dir.cwd().createFile(io, path, .{});
+
     defer if (!std.mem.eql(u8, path, "-")) out.close(io);
+
     var write_buffer: [64 * 1024]u8 = undefined;
     var writer = out.writer(io, &write_buffer);
+
     try writer.interface.writeAll(data);
     try writer.interface.flush();
 }
@@ -387,11 +509,24 @@ fn splitList(
     original: []const u8,
     separators: []const u8,
 ) ![][]const u8 {
-    var list = try std.ArrayList([]const u8).initCapacity(allocator, 16);
+    var list = try std.ArrayList([]const u8).initCapacity(
+        allocator,
+        16,
+    );
     errdefer list.deinit(allocator);
-    var iterator = std.mem.tokenizeAny(u8, original, separators);
+
+    var iterator = std.mem.tokenizeAny(
+        u8,
+        original,
+        separators,
+    );
+
     while (iterator.next()) |pattern| {
-        try list.append(allocator, std.mem.trim(u8, pattern, " "));
+        try list.append(
+            allocator,
+            std.mem.trim(u8, pattern, " "),
+        );
     }
+
     return try list.toOwnedSlice(allocator);
 }
