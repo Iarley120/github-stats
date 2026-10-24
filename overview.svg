@@ -7,15 +7,10 @@ svg {
 }
 
 #background {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
-  fill: white;
-  stroke: rgb(225, 228, 232);
+  fill: #0d1117;
+  stroke: #30363d;
   stroke-width: 1px;
-  rx: 6px;
-  ry: 6px;
 }
-
 #gh-dark-mode-only:target #background {
   fill: #0d1117;
   stroke-width: 0.5px;
