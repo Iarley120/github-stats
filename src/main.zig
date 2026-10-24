@@ -256,6 +256,10 @@ pub fn main(init: std.process.Init) !void {
         lines_changed: usize = 0,
         views: usize = 0,
         repos: usize = 0,
+        issue_contributions: usize = 0,
+        pr_contributions: usize = 0,
+        review_contributions: usize = 0,
+
     } = .{
         .contributions = stats.repo_contributions +
             stats.issue_contributions +
@@ -265,6 +269,9 @@ pub fn main(init: std.process.Init) !void {
         .languages = try .init(allocator, &.{}, &.{}),
         .language_colors = try .init(allocator, &.{}, &.{}),
         .name = stats.name,
+        .issue_contributions = stats.issue_contributions,
+        .pr_contributions = stats.pr_contributions,
+        .review_contributions = stats.review_contributions,
     };
     defer aggregate_stats.languages.deinit(allocator);
     defer aggregate_stats.language_colors.deinit(allocator);
