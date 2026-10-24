@@ -1,75 +1,327 @@
 
-<style>
-  svg {
-    font-family: -apple-system, BlinkMacSystemFont,
-      "Segoe UI", Helvetica, Arial, sans-serif;
-    font-size: 13px;
-  }
+<svg
+  id="gh-dark-mode-only"
+  width="500"
+  height="480"
+  viewBox="0 0 500 480"
+  xmlns="http://www.w3.org/2000/svg">
 
-  .background {
-    fill: #0d1117;
-    stroke: #30363d;
-    stroke-width: 1.5;
-  }
+  <style>
+    svg {
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 13px;
+    }
 
-  /* Título visível desde o início */
-  .title {
-    fill: #58a6ff;
-    font-size: 18px;
-    font-weight: 600;
-    opacity: 1;
-  }
+    /* Fundo escuro */
+    .background {
+      fill: #0d1117;
+      stroke: #30363d;
+      stroke-width: 1.5;
+    }
 
-  .label {
-    fill: #c9d1d9;
-    font-size: 13px;
-  }
+    /* Título fixo */
+    .title {
+      fill: #58a6ff;
+      font-size: 18px;
+      font-weight: 600;
+      opacity: 1;
+    }
 
-  .value {
-    fill: #c9d1d9;
-    font-size: 13px;
-    text-anchor: end;
-  }
+    /* Descrição dos indicadores */
+    .label {
+      fill: #c9d1d9;
+      font-size: 13px;
+    }
 
-  .icon {
-    fill: none;
-    stroke: #8b949e;
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
+    /* Valores das estatísticas */
+    .value {
+      fill: #c9d1d9;
+      font-size: 13px;
+      text-anchor: end;
+    }
 
-  /*
-   * Entrada individual das estatísticas.
-   * Mesma duração do languages.svg.
-   */
-  .row {
-    opacity: 0;
-    transform: translateX(-500px);
+    /* Ícones */
+    .icon {
+      fill: none;
+      stroke: #8b949e;
+      stroke-width: 1.7;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
-    animation-name: slideIn;
-    animation-duration: 1.5s;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes slideIn {
-    0% {
+    /*
+     * ANIMAÇÃO:
+     * Cada linha entra da esquerda para a direita.
+     * Os atrasos individuais ficam nos grupos abaixo.
+     */
+    .row {
       opacity: 0;
       transform: translateX(-500px);
+
+      animation-name: slideIn;
+      animation-duration: 1.5s;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: forwards;
     }
 
-    100% {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(-500px);
+      }
 
-  @media (prefers-reduced-motion: reduce) {
-    .row {
-      animation: none;
-      opacity: 1;
-      transform: none;
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
-  }
-</style>
+
+    /* Acessibilidade */
+    @media (prefers-reduced-motion: reduce) {
+      .row {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+
+  <!-- Fundo -->
+  <rect
+    class="background"
+    x="5"
+    y="5"
+    width="490"
+    height="470"
+    rx="7"/>
+
+  <!-- Título -->
+  <text x="35" y="38" class="title">
+    {{ name }}'s GitHub Statistics
+  </text>
+
+  <!-- 1. Contribuições -->
+  <g class="row" style="animation-delay: 0ms">
+    <g transform="translate(28 59)">
+      <path class="icon"
+        d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8M12 3l5 5h-5V3zM12 15h9m-4-4v8"/>
+    </g>
+
+    <text x="65" y="76" class="label">
+      All-time GitHub contributions given
+    </text>
+
+    <text x="462" y="76" class="value">
+      {{ contributions }}
+    </text>
+  </g>
+
+  <!-- 2. Repositórios -->
+  <g class="row" style="animation-delay: 100ms">
+    <g transform="translate(28 89)">
+      <path class="icon"
+        d="M5 3h14v17l-7-4-7 4V3zM8 7h8M8 10h8"/>
+    </g>
+
+    <text x="65" y="106" class="label">
+      Repositories with contributions
+    </text>
+
+    <text x="462" y="106" class="value">
+      {{ repos }}
+    </text>
+  </g>
+
+  <!-- 3. Linhas alteradas -->
+  <g class="row" style="animation-delay: 200ms">
+    <g transform="translate(28 119)">
+      <path class="icon"
+        d="M5 7h14M12 2v10M5 18h14"/>
+    </g>
+
+    <text x="65" y="136" class="label">
+      Lines of code changes
+    </text>
+
+    <text x="462" y="136" class="value">
+      {{ lines_changed }}
+    </text>
+  </g>
+
+  <!-- 4. Percentual médio -->
+  <g class="row" style="animation-delay: 300ms">
+    <g transform="translate(28 149)">
+      <path class="icon"
+        d="M3 3v18h18M6 16l5-6 4 3 6-8"/>
+    </g>
+
+    <text x="65" y="166" class="label">
+      Avg. percent of code changes (per repo)
+    </text>
+
+    <text x="462" y="166" class="value">
+      {{ avg_percent }}
+    </text>
+  </g>
+
+  <!-- 5. Colaboradores -->
+  <g class="row" style="animation-delay: 400ms">
+    <g transform="translate(28 179)">
+      <circle class="icon" cx="9" cy="7" r="3"/>
+      <path class="icon"
+        d="M3 20v-2a6 6 0 0 1 12 0v2M17 5a3 3 0 0 1 0 6M17 15a5 5 0 0 1 4 5"/>
+    </g>
+
+    <text x="65" y="196" class="label">
+      Repository collaborators
+    </text>
+
+    <text x="462" y="196" class="value">
+      {{ collaborators }}
+    </text>
+  </g>
+
+  <!-- 6. Contribuidores -->
+  <g class="row" style="animation-delay: 500ms">
+    <g transform="translate(28 209)">
+      <circle class="icon" cx="12" cy="12" r="9"/>
+      <path class="icon"
+        d="M12 6v6l4 3M8 2l-4-2"/>
+    </g>
+
+    <text x="65" y="226" class="label">
+      Repository contributors
+    </text>
+
+    <text x="462" y="226" class="value">
+      {{ contributors }}
+    </text>
+  </g>
+
+  <!-- 7. Visualizações -->
+  <g class="row" style="animation-delay: 600ms">
+    <g transform="translate(28 239)">
+      <path class="icon"
+        d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/>
+      <circle class="icon" cx="12" cy="12" r="3"/>
+    </g>
+
+    <text x="65" y="256" class="label">
+      Repository views (past 14 days)
+    </text>
+
+    <text x="462" y="256" class="value">
+      {{ views }}
+    </text>
+  </g>
+
+  <!-- 8. Clones -->
+  <g class="row" style="animation-delay: 700ms">
+    <g transform="translate(28 269)">
+      <rect class="icon"
+        x="3"
+        y="4"
+        width="18"
+        height="16"
+        rx="2"/>
+      <path class="icon"
+        d="M7 9l3 3-3 3M12 15h5"/>
+    </g>
+
+    <text x="65" y="286" class="label">
+      Repository clones (past 14 days)
+    </text>
+
+    <text x="462" y="286" class="value">
+      {{ clones }}
+    </text>
+  </g>
+
+  <!-- 9. Forks -->
+  <g class="row" style="animation-delay: 800ms">
+    <g transform="translate(28 299)">
+      <circle class="icon" cx="6" cy="4" r="2"/>
+      <circle class="icon" cx="18" cy="4" r="2"/>
+      <circle class="icon" cx="12" cy="20" r="2"/>
+      <path class="icon"
+        d="M6 6v4a6 6 0 0 0 6 6M18 6v4a6 6 0 0 1-6 6v2"/>
+    </g>
+
+    <text x="65" y="316" class="label">
+      Forks
+    </text>
+
+    <text x="462" y="316" class="value">
+      {{ forks }}
+    </text>
+  </g>
+
+  <!-- 10. Estrelas -->
+  <g class="row" style="animation-delay: 900ms">
+    <g transform="translate(28 329)">
+      <path class="icon"
+        d="M12 2l3.1 6.3 7 .9-5.1 5 .9 7-5.9-3.3-5.9 3.3.9-7-5.1-5 7-.9L12 2z"/>
+    </g>
+
+    <text x="65" y="346" class="label">
+      Stars
+    </text>
+
+    <text x="462" y="346" class="value">
+      {{ stars }}
+    </text>
+  </g>
+
+  <!-- 11. Pull Requests -->
+  <g class="row" style="animation-delay: 1000ms">
+    <g transform="translate(28 359)">
+      <circle class="icon" cx="6" cy="4" r="2"/>
+      <circle class="icon" cx="6" cy="20" r="2"/>
+      <circle class="icon" cx="18" cy="20" r="2"/>
+      <path class="icon"
+        d="M6 6v12M18 18v-7a6 6 0 0 0-6-6h-2M13 2l-3 3 3 3"/>
+    </g>
+
+    <text x="65" y="376" class="label">
+      Pull requests
+    </text>
+
+    <text x="462" y="376" class="value">
+      {{ pr_contributions }}
+    </text>
+  </g>
+
+  <!-- 12. Issues -->
+  <g class="row" style="animation-delay: 1100ms">
+    <g transform="translate(28 389)">
+      <circle class="icon" cx="12" cy="12" r="9"/>
+      <circle cx="12" cy="12" r="2" fill="#8b949e"/>
+    </g>
+
+    <text x="65" y="406" class="label">
+      Issues
+    </text>
+
+    <text x="462" y="406" class="value">
+      {{ issue_contributions }}
+    </text>
+  </g>
+
+  <!-- 13. Revisões -->
+  <g class="row" style="animation-delay: 1200ms">
+    <g transform="translate(28 419)">
+      <path class="icon"
+        d="M4 4h16v12H9l-5 4V4zM8 10l3 3 5-5"/>
+    </g>
+
+    <text x="65" y="436" class="label">
+      Pull request reviews
+    </text>
+
+    <text x="462" y="436" class="value">
+      {{ review_contributions }}
+    </text>
+  </g>
+
+</svg>
