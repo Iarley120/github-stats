@@ -46,26 +46,25 @@
       stroke-linejoin: round;
     }
 
-    /* Efeito de entrada em cascata */
+    /* Entrada lateral em cascata */
     .row {
       opacity: 0;
-      animation: slideIn 0.7s
-        cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: slideIn 1s ease-in-out forwards;
     }
 
     @keyframes slideIn {
-      from {
+      0% {
         opacity: 0;
-        transform: translateX(-35px);
+        transform: translateX(-500px);
       }
 
-      to {
+      100% {
         opacity: 1;
         transform: translateX(0);
       }
     }
 
-    /* Animação do título */
+    /* Entrada suave do título */
     @keyframes titleFade {
       from {
         opacity: 0;
@@ -78,7 +77,7 @@
       }
     }
 
-    /* Acessibilidade */
+    /* Respeita preferência por movimento reduzido */
     @media (prefers-reduced-motion: reduce) {
       .row,
       .title {
@@ -111,7 +110,7 @@
       All-time GitHub contributions given
     </text>
     <text x="462" y="76" class="value">
-      79
+      80
     </text>
   </g>
 
@@ -139,7 +138,7 @@
       Lines of code changes
     </text>
     <text x="462" y="136" class="value">
-      14,450
+      14,467
     </text>
   </g>
 
@@ -177,7 +176,7 @@
     <g transform="translate(28 209)">
       <circle class="icon" cx="12" cy="12" r="9"/>
       <path class="icon"
-        d="M12 6v6l4 3M8 2l-4 2"/>
+        d="M12 6v6l4 3M8 2l-4-2"/>
     </g>
     <text x="65" y="226" class="label">
       Repository contributors
