@@ -1,149 +1,218 @@
-<svg id="gh-dark-mode-only" width="360" height="210" xmlns="http://www.w3.org/2000/svg">
-<style>
-svg {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
-  font-size: 14px;
-  line-height: 21px;
-}
 
-#background {
-  width: calc(100% - 10px);
-  height: calc(100% - 10px);
-  fill: white;
-  stroke: rgb(225, 228, 232);
-  stroke-width: 1px;
-  rx: 6px;
-  ry: 6px;
-}
+<svg
+  id="gh-dark-mode-only"
+  width="500"
+  height="480"
+  viewBox="0 0 500 480"
+  xmlns="http://www.w3.org/2000/svg">
 
-#gh-dark-mode-only:target #background {
-  fill: #0d1117;
-  stroke-width: 0.5px;
-}
+  <style>
+    svg {
+      font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 13px;
+    }
 
-foreignObject {
-  width: calc(100% - 10px - 32px);
-  height: calc(100% - 10px - 24px);
-}
+    /* Fundo escuro permanente */
+    #background {
+      fill: #0d1117;
+      stroke: #30363d;
+      stroke-width: 1.5;
+    }
 
-h2 {
-  margin-top: 0;
-  margin-bottom: 0.75em;
-  line-height: 24px;
-  font-size: 16px;
-  font-weight: 600;
-  color: rgb(36, 41, 46);
-  fill: rgb(36, 41, 46);
-}
+    /* Título */
+    h2 {
+      margin: 0 0 22px 0;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 26px;
+      color: #58a6ff;
+    }
 
-#gh-dark-mode-only:target h2 {
-  color: #c9d1d9;
-  fill: #c9d1d9;
-}
+    /* Área de conteúdo */
+    .content {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      color: #c9d1d9;
+    }
 
-ul {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 0;
-  margin-bottom: 0;
-}
+    /* Barra das linguagens */
+    .progress {
+      display: flex;
+      width: 100%;
+      height: 12px;
+      overflow: hidden;
+      background-color: #21262d;
+      border-radius: 6px;
+      margin-bottom: 26px;
+      outline: 1px solid transparent;
+      animation: progressFade 1s ease-out both;
+    }
 
-li {
-  display: inline-flex;
-  font-size: 12px;
-  margin-right: 1ch;
-  align-items: center;
-  flex-wrap: nowrap;
-  transform: translateX(-500%);
-  animation: slideIn 2s ease-in-out forwards;
-}
+    .progress-item {
+      outline: 1px solid #30363d;
+      border-collapse: collapse;
+    }
 
-@keyframes slideIn {
-  to {
-    transform: translateX(0);
-  }
-}
+    /* Lista das linguagens */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+      column-gap: 16px;
+      row-gap: 16px;
+    }
 
-div.ellipsis {
-  height: 176px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    li {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      font-size: 13px;
+      line-height: 20px;
+      opacity: 0;
+      transform: translateX(-400px);
+      animation: slideIn 1s ease-in-out forwards;
+    }
 
-.octicon {
-  fill: rgb(88, 96, 105);
-  margin-right: 0.5ch;
-  vertical-align: top;
-}
+    /* Atraso sequencial para as linguagens */
+    li:nth-child(1)  { animation-delay: 0.10s; }
+    li:nth-child(2)  { animation-delay: 0.18s; }
+    li:nth-child(3)  { animation-delay: 0.26s; }
+    li:nth-child(4)  { animation-delay: 0.34s; }
+    li:nth-child(5)  { animation-delay: 0.42s; }
+    li:nth-child(6)  { animation-delay: 0.50s; }
+    li:nth-child(7)  { animation-delay: 0.58s; }
+    li:nth-child(8)  { animation-delay: 0.66s; }
+    li:nth-child(9)  { animation-delay: 0.74s; }
+    li:nth-child(10) { animation-delay: 0.82s; }
+    li:nth-child(11) { animation-delay: 0.90s; }
+    li:nth-child(12) { animation-delay: 0.98s; }
+    li:nth-child(n+13) {
+      animation-delay: 1.06s;
+    }
 
-#gh-dark-mode-only:target .octicon {
-  color: #8b949e;
-  fill: #8b949e;
-}
+    /* Ícones das linguagens */
+    .octicon {
+      fill: #8b949e;
+      color: #8b949e;
+      margin-right: 6px;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
 
-.progress {
-  display: flex;
-  height: 8px;
-  overflow: hidden;
-  background-color: rgb(225, 228, 232);
-  border-radius: 6px;
-  outline: 1px solid transparent;
-  margin-bottom: 1em;
-}
+    /* Nome da linguagem */
+    .lang {
+      color: #c9d1d9;
+      font-weight: 600;
+      margin-right: 4px;
+    }
 
-#gh-dark-mode-only:target .progress {
-  background-color: rgba(110, 118, 129, 0.4);
-}
+    /* Porcentagem */
+    .percent {
+      color: #8b949e;
+    }
 
-.progress-item {
-  outline: 2px solid rgb(225, 228, 232);
-  border-collapse: collapse;
-}
+    /* Entrada pela esquerda */
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(-400px);
+      }
 
-#gh-dark-mode-only:target .progress-item {
-  outline: 2px solid #393f47;
-}
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
 
-.lang {
-  font-weight: 600;
-  margin-right: 4px;
-  color: rgb(36, 41, 46);
-}
+    /* Entrada do título */
+    .title-animation {
+      opacity: 0;
+      animation: titleFade 0.8s ease-out forwards;
+    }
 
-#gh-dark-mode-only:target .lang {
-  color: #c9d1d9;
-}
+    @keyframes titleFade {
+      from {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
 
-.percent {
-  color: rgb(88, 96, 105)
-}
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-#gh-dark-mode-only:target .percent {
-  color: #8b949e;
-}
-</style>
-<g>
-<rect x="5" y="5" id="background" />
-<g>
-<foreignObject x="21" y="17" width="318" height="176">
-<div xmlns="http://www.w3.org/1999/xhtml" class="ellipsis">
+    /* Entrada da barra */
+    @keyframes progressFade {
+      from {
+        opacity: 0;
+        transform: translateX(-100%);
+      }
 
-<h2>Languages Used (By File Size)</h2>
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
 
-<div>
-<span class="progress">
-{{ progress }}
-</span>
-</div>
+    /* Acessibilidade */
+    @media (prefers-reduced-motion: reduce) {
+      li,
+      .progress,
+      .title-animation {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
 
-<ul>
+  <!-- Fundo -->
+  <rect
+    id="background"
+    x="5"
+    y="5"
+    width="490"
+    height="470"
+    rx="7"
+    ry="7"/>
 
-{{ lang_list }}
+  <!-- Conteúdo -->
+  <foreignObject
+    x="35"
+    y="32"
+    width="430"
+    height="420">
 
-</ul>
+    <div
+      xmlns="http://www.w3.org/1999/xhtml"
+      class="content">
 
-</div>
-</foreignObject>
-</g>
-</g>
+      <!-- Título animado -->
+      <h2 class="title-animation">
+        Languages Used (By File Size)
+      </h2>
+
+      <!-- Barra de progresso -->
+      <div>
+        <span class="progress">
+          {{ progress }}
+        </span>
+      </div>
+
+      <!-- Linguagens e porcentagens -->
+      <ul>
+        {{ lang_list }}
+      </ul>
+
+    </div>
+
+  </foreignObject>
+
 </svg>
