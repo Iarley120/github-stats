@@ -23,6 +23,8 @@
       fill: #58a6ff;
       font-size: 18px;
       font-weight: 600;
+      opacity: 0;
+      animation: titleFade 0.8s ease-out forwards;
     }
 
     .label {
@@ -44,14 +46,45 @@
       stroke-linejoin: round;
     }
 
+    /* Efeito de entrada em cascata */
     .row {
       opacity: 0;
-      animation: fadeIn 0.5s ease-out forwards;
+      animation: slideIn 0.7s
+        cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    @keyframes fadeIn {
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-35px);
+      }
+
       to {
         opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* Animação do título */
+    @keyframes titleFade {
+      from {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Acessibilidade */
+    @media (prefers-reduced-motion: reduce) {
+      .row,
+      .title {
+        animation: none;
+        opacity: 1;
+        transform: none;
       }
     }
   </style>
@@ -106,7 +139,7 @@
       Lines of code changes
     </text>
     <text x="462" y="136" class="value">
-      14,413
+      14,450
     </text>
   </g>
 
@@ -120,7 +153,7 @@
       Avg. percent of code changes (per repo)
     </text>
     <text x="462" y="166" class="value">
-      98.58%
+      98.42%
     </text>
   </g>
 
@@ -150,7 +183,7 @@
       Repository contributors
     </text>
     <text x="462" y="226" class="value">
-      11
+      10
     </text>
   </g>
 
