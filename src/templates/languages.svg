@@ -13,14 +13,19 @@
       font-size: 13px;
     }
 
-    /* Fundo escuro permanente */
     #background {
       fill: #0d1117;
       stroke: #30363d;
       stroke-width: 1.5;
     }
 
-    /* Título */
+    .content {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      color: #c9d1d9;
+    }
+
     h2 {
       margin: 0 0 22px 0;
       font-size: 18px;
@@ -29,15 +34,12 @@
       color: #58a6ff;
     }
 
-    /* Área de conteúdo */
-    .content {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      color: #c9d1d9;
+    /* Título fixo, visível desde o início */
+    .title-animation {
+      opacity: 1;
     }
 
-    /* Barra das linguagens */
+    /* Barra fixa, como no vídeo */
     .progress {
       display: flex;
       width: 100%;
@@ -47,7 +49,6 @@
       border-radius: 6px;
       margin-bottom: 26px;
       outline: 1px solid transparent;
-      animation: progressFade 1s ease-out both;
     }
 
     .progress-item {
@@ -55,7 +56,6 @@
       border-collapse: collapse;
     }
 
-    /* Lista das linguagens */
     ul {
       list-style: none;
       padding: 0;
@@ -67,6 +67,10 @@
       row-gap: 16px;
     }
 
+    /*
+     * Cada linguagem começa fora da área visível
+     * e entra individualmente pela esquerda.
+     */
     li {
       display: inline-flex;
       align-items: center;
@@ -74,29 +78,37 @@
       white-space: nowrap;
       font-size: 13px;
       line-height: 20px;
+
       opacity: 0;
-      transform: translateX(-400px);
-      animation: slideIn 1s ease-in-out forwards;
+      transform: translateX(-430px);
+
+      animation-name: slideIn;
+      animation-duration: 1.5s;
+      animation-timing-function: ease-in-out;
+      animation-fill-mode: forwards;
     }
 
-    /* Atraso sequencial para as linguagens */
-    li:nth-child(1)  { animation-delay: 0.10s; }
-    li:nth-child(2)  { animation-delay: 0.18s; }
-    li:nth-child(3)  { animation-delay: 0.26s; }
-    li:nth-child(4)  { animation-delay: 0.34s; }
-    li:nth-child(5)  { animation-delay: 0.42s; }
-    li:nth-child(6)  { animation-delay: 0.50s; }
-    li:nth-child(7)  { animation-delay: 0.58s; }
-    li:nth-child(8)  { animation-delay: 0.66s; }
-    li:nth-child(9)  { animation-delay: 0.74s; }
-    li:nth-child(10) { animation-delay: 0.82s; }
-    li:nth-child(11) { animation-delay: 0.90s; }
-    li:nth-child(12) { animation-delay: 0.98s; }
-    li:nth-child(n+13) {
-      animation-delay: 1.06s;
+    /*
+     * Sequência sincronizada com o overview.svg.
+     */
+    li:nth-child(1)  { animation-delay: 0ms; }
+    li:nth-child(2)  { animation-delay: 100ms; }
+    li:nth-child(3)  { animation-delay: 200ms; }
+    li:nth-child(4)  { animation-delay: 300ms; }
+    li:nth-child(5)  { animation-delay: 400ms; }
+    li:nth-child(6)  { animation-delay: 500ms; }
+    li:nth-child(7)  { animation-delay: 600ms; }
+    li:nth-child(8)  { animation-delay: 700ms; }
+    li:nth-child(9)  { animation-delay: 800ms; }
+    li:nth-child(10) { animation-delay: 900ms; }
+    li:nth-child(11) { animation-delay: 1000ms; }
+    li:nth-child(12) { animation-delay: 1100ms; }
+    li:nth-child(13) { animation-delay: 1200ms; }
+
+    li:nth-child(n+14) {
+      animation-delay: 1300ms;
     }
 
-    /* Ícones das linguagens */
     .octicon {
       fill: #8b949e;
       color: #8b949e;
@@ -105,23 +117,20 @@
       flex-shrink: 0;
     }
 
-    /* Nome da linguagem */
     .lang {
       color: #c9d1d9;
       font-weight: 600;
       margin-right: 4px;
     }
 
-    /* Porcentagem */
     .percent {
       color: #8b949e;
     }
 
-    /* Entrada pela esquerda */
     @keyframes slideIn {
       0% {
         opacity: 0;
-        transform: translateX(-400px);
+        transform: translateX(-430px);
       }
 
       100% {
@@ -130,42 +139,8 @@
       }
     }
 
-    /* Entrada do título */
-    .title-animation {
-      opacity: 0;
-      animation: titleFade 0.8s ease-out forwards;
-    }
-
-    @keyframes titleFade {
-      from {
-        opacity: 0;
-        transform: translateY(-12px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Entrada da barra */
-    @keyframes progressFade {
-      from {
-        opacity: 0;
-        transform: translateX(-100%);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    /* Acessibilidade */
     @media (prefers-reduced-motion: reduce) {
-      li,
-      .progress,
-      .title-animation {
+      li {
         animation: none;
         opacity: 1;
         transform: none;
@@ -173,7 +148,7 @@
     }
   </style>
 
-  <!-- Fundo -->
+  <!-- Fundo escuro -->
   <rect
     id="background"
     x="5"
@@ -194,19 +169,16 @@
       xmlns="http://www.w3.org/1999/xhtml"
       class="content">
 
-      <!-- Título animado -->
       <h2 class="title-animation">
         Languages Used (By File Size)
       </h2>
 
-      <!-- Barra de progresso -->
       <div>
         <span class="progress">
           {{ progress }}
         </span>
       </div>
 
-      <!-- Linguagens e porcentagens -->
       <ul>
         {{ lang_list }}
       </ul>
