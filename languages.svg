@@ -8,8 +8,7 @@ svg {
 
 #background {
   fill: #000000;
-  stroke: #30363d;
-  stroke-width: 1.5;
+  stroke: none;
 }
 
 #gh-dark-mode-only:target #background {
