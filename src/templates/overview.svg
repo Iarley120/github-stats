@@ -16,7 +16,6 @@ svg {
   rx: 6px;
   ry: 6px;
 }
-
 #gh-dark-mode-only:target #background {
   fill: #000000;
   stroke-width: 0.5px;
