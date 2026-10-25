@@ -6,10 +6,14 @@ svg {
   line-height: 21px;
 }
 
-#background { fill: #0d1117; stroke: #30363d; stroke-width: 1.5; }
+#background {
+  fill: #000000;
+  stroke: #30363d;
+  stroke-width: 1.5;
+}
 
 #gh-dark-mode-only:target #background {
-  fill: #0d1117;
+  fill: #000000;
   stroke-width: 0.5px;
 }
 
@@ -24,8 +28,8 @@ h2 {
   line-height: 24px;
   font-size: 16px;
   font-weight: 600;
-  color: rgb(36, 41, 46);
-  fill: rgb(36, 41, 46);
+  color: #c9d1d9;
+  fill: #c9d1d9;
 }
 
 #gh-dark-mode-only:target h2 {
@@ -63,7 +67,7 @@ div.ellipsis {
 }
 
 .octicon {
-  fill: rgb(88, 96, 105);
+  fill: #8b949e;
   margin-right: 0.5ch;
   vertical-align: top;
 }
@@ -77,7 +81,7 @@ div.ellipsis {
   display: flex;
   height: 8px;
   overflow: hidden;
-  background-color: rgb(225, 228, 232);
+  background-color: rgba(110, 118, 129, 0.4);
   border-radius: 6px;
   outline: 1px solid transparent;
   margin-bottom: 1em;
@@ -88,7 +92,7 @@ div.ellipsis {
 }
 
 .progress-item {
-  outline: 2px solid rgb(225, 228, 232);
+  outline: 2px solid #393f47;
   border-collapse: collapse;
 }
 
@@ -99,7 +103,7 @@ div.ellipsis {
 .lang {
   font-weight: 600;
   margin-right: 4px;
-  color: rgb(36, 41, 46);
+  color: #c9d1d9;
 }
 
 #gh-dark-mode-only:target .lang {
@@ -107,35 +111,42 @@ div.ellipsis {
 }
 
 .percent {
-  color: rgb(88, 96, 105)
+  color: #8b949e;
 }
 
 #gh-dark-mode-only:target .percent {
   color: #8b949e;
 }
 </style>
+
 <g>
-<rect x="5" y="5" id="background" />
-<g>
-<foreignObject x="21" y="17" width="318" height="176">
-<div xmlns="http://www.w3.org/1999/xhtml" class="ellipsis">
+  <rect
+    x="5"
+    y="5"
+    width="350"
+    height="200"
+    rx="6"
+    id="background"
+  />
 
-<h2>Languages Used (By File Size)</h2>
+  <g>
+    <foreignObject x="21" y="17" width="318" height="176">
+      <div xmlns="http://www.w3.org/1999/xhtml" class="ellipsis">
 
-<div>
-<span class="progress">
-{{ progress }}
-</span>
-</div>
+        <h2>Languages Used (By File Size)</h2>
 
-<ul>
+        <div>
+          <span class="progress">
+            {{ progress }}
+          </span>
+        </div>
 
-{{ lang_list }}
+        <ul>
+          {{ lang_list }}
+        </ul>
 
-</ul>
-
-</div>
-</foreignObject>
-</g>
+      </div>
+    </foreignObject>
+  </g>
 </g>
 </svg>
